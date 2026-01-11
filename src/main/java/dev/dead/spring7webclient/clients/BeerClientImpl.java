@@ -1,5 +1,6 @@
 package dev.dead.spring7webclient.clients;
 
+import dev.dead.spring7webclient.model.BeerDTO;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,7 +13,7 @@ public class BeerClientImpl implements BeerClient {
     public BeerClientImpl() {
         this.webClient =
                 WebClient.builder()
-                        .baseUrl("http://localhost:8080")
+                        .baseUrl("http://127.0.0.1:8080")
                         .build();
     }
 
@@ -25,5 +26,14 @@ public class BeerClientImpl implements BeerClient {
                 .retrieve()
                 .bodyToFlux(String.class);
 
+    }
+
+    @Override
+    public Flux<BeerDTO> listBeersDto() {
+        return
+                webClient.get()
+                        .uri("api/v2/beer")
+                        .retrieve()
+                        .bodyToFlux(BeerDTO.class);
     }
 }
